@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Repertório Fácil</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; }
@@ -15,7 +16,7 @@
         .text-brand { color: #E53E3E; }
     </style>
 </head>
-<body class="bg-spotify-black text-zinc-200 min-h-screen antialiased selection:bg-red-600 selection:text-white">
+<body class="bg-spotify-black text-zinc-200 min-h-screen antialiased">
 
     <div class="flex flex-col md:flex-row min-h-screen">
         
@@ -47,7 +48,7 @@
             <section id="tab-dashboard" class="space-y-8">
                 <div class="border-b border-zinc-900 pb-5">
                     <h2 class="text-2xl font-semibold tracking-tight text-zinc-100">Visão Geral</h2>
-                    <p class="text-xs text-zinc-500 mt-1 uppercase tracking-wider font-medium">Métricas de Performance e Agenda</p>
+                    <p class="text-xs text-zinc-500 mt-1 uppercase tracking-wider font-medium">Métricas e Agenda</p>
                 </div>
                 
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
@@ -97,24 +98,24 @@
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div class="sm:col-span-2">
                             <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Nome da Banda</label>
-                            <input type="text" id="banda-nome" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
+                            <input type="text" id="banda-nome" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700">
                         </div>
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Estado (UF)</label>
-                            <input type="text" id="banda-estado" maxlength="2" placeholder="SP" class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
+                            <input type="text" id="banda-estado" maxlength="2" placeholder="SP" class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700">
                         </div>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Cidade</label>
-                        <input type="text" id="banda-cidade" class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
+                        <input type="text" id="banda-cidade" class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Observações</label>
-                        <textarea id="banda-observacoes" rows="2" class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition"></textarea>
+                        <textarea id="banda-observacoes" rows="2" class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700"></textarea>
                     </div>
                     <div class="flex gap-2 justify-end pt-2">
-                        <button type="button" onclick="window.limparFormBanda()" class="px-4 py-2 text-xs font-medium bg-zinc-900 rounded text-zinc-400 hover:bg-zinc-800 transition">Cancelar</button>
-                        <button type="submit" class="px-4 py-2 text-xs font-medium bg-brand rounded text-white bg-brand-hover transition shadow-sm">Salvar Registro</button>
+                        <button type="button" onclick="window.limparFormBanda()" class="px-4 py-2 text-xs font-medium bg-zinc-900 rounded text-zinc-400 hover:bg-zinc-800">Cancelar</button>
+                        <button type="submit" class="px-4 py-2 text-xs font-medium bg-brand rounded text-white bg-brand-hover shadow-sm">Salvar Registro</button>
                     </div>
                 </form>
                 <div class="bg-spotify-card rounded-lg border border-zinc-900 overflow-hidden shadow-sm">
@@ -139,16 +140,16 @@
                     <input type="hidden" id="integrante-id">
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Selecionar Banda</label>
-                        <select id="integrante-banda-id" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-300 focus:outline-none focus:border-zinc-700 transition"></select>
+                        <select id="integrante-banda-id" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-300 focus:outline-none focus:border-zinc-700"></select>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Nome do Músico</label>
-                            <input type="text" id="integrante-nome" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
+                            <input type="text" id="integrante-nome" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700">
                         </div>
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Instrumento Principal</label>
-                            <input type="text" id="integrante-instrumento" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
+                            <input type="text" id="integrante-instrumento" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700">
                         </div>
                     </div>
                     <div class="flex items-center gap-2 py-1">
@@ -157,11 +158,11 @@
                     </div>
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Notas / Observações</label>
-                        <input type="text" id="integrante-observacoes" class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
+                        <input type="text" id="integrante-observacoes" class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700">
                     </div>
                     <div class="flex gap-2 justify-end pt-2">
-                        <button type="button" onclick="window.limparFormIntegrante()" class="px-4 py-2 text-xs font-medium bg-zinc-900 rounded text-zinc-400 hover:bg-zinc-800 transition">Cancelar</button>
-                        <button type="submit" class="px-4 py-2 text-xs font-medium bg-brand rounded text-white bg-brand-hover transition shadow-sm">Salvar Registro</button>
+                        <button type="button" onclick="window.limparFormIntegrante()" class="px-4 py-2 text-xs font-medium bg-zinc-900 rounded text-zinc-400 hover:bg-zinc-800">Cancelar</button>
+                        <button type="submit" class="px-4 py-2 text-xs font-medium bg-brand rounded text-white bg-brand-hover shadow-sm">Salvar Registro</button>
                     </div>
                 </form>
                 <div class="bg-spotify-card rounded-lg border border-zinc-900 overflow-hidden shadow-sm">
@@ -185,18 +186,16 @@
                     <h2 class="text-2xl font-semibold tracking-tight text-zinc-100">Catálogo de Músicas</h2>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-spotify-card p-4 rounded-lg border border-zinc-900 shadow-sm">
-                    <input type="text" id="busca-musica" oninput="window.listarMusicas()" placeholder="Filtrar por título ou artista..." class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
-                    <select id="filtro-categoria" onchange="window.listarMusicas()" class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-400 focus:outline-none focus:border-zinc-700 transition">
+                    <input type="text" id="busca-musica" oninput="window.listarMusicas()" placeholder="Filtrar por título..." class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700">
+                    <select id="filtro-categoria" onchange="window.listarMusicas()" class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-400 focus:outline-none focus:border-zinc-700">
                         <option value="">Todas as Categorias</option>
                         <option value="Rock">Rock</option>
                         <option value="Pop">Pop</option>
                         <option value="Metal">Metal</option>
-                        <option value="Outros">Outros</option>
                     </select>
-                    <select id="ordenacao-musica" onchange="window.listarMusicas()" class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-400 focus:outline-none focus:border-zinc-700 transition">
+                    <select id="ordenacao-musica" onchange="window.listarMusicas()" class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-400 focus:outline-none focus:border-zinc-700">
                         <option value="titulo">Ordenar por Nome</option>
                         <option value="bpm">Ordenar por BPM</option>
-                        <option value="tom">Ordenar por Tom</option>
                     </select>
                 </div>
                 <form id="form-musica" class="bg-spotify-card p-6 rounded-lg border border-zinc-900 space-y-4 shadow-sm">
@@ -204,38 +203,34 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Título da Música</label>
-                            <input type="text" id="musica-titulo" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
+                            <input type="text" id="musica-titulo" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Artista / Banda Original</label>
-                            <input type="text" id="musica-artista" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Artista Original</label>
+                            <input type="text" id="musica-artista" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700">
                         </div>
                     </div>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Gênero</label>
-                            <input type="text" id="musica-categoria" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
+                            <input type="text" id="musica-categoria" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700">
                         </div>
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Tom</label>
-                            <input type="text" id="musica-tom" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
+                            <input type="text" id="musica-tom" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700">
                         </div>
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">BPM</label>
-                            <input type="number" id="musica-bpm" class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
+                            <input type="number" id="musica-bpm" class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700">
                         </div>
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Duração</label>
-                            <input type="text" id="musica-duracao" placeholder="04:00" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
+                            <input type="text" id="musica-duracao" placeholder="04:00" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700">
                         </div>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Link da Cifra / Notas</label>
-                        <input type="text" id="musica-observacoes" class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
-                    </div>
                     <div class="flex gap-2 justify-end pt-2">
-                        <button type="button" onclick="window.limparFormMusica()" class="px-4 py-2 text-xs font-medium bg-zinc-900 rounded text-zinc-400 hover:bg-zinc-800 transition">Cancelar</button>
-                        <button type="submit" class="px-4 py-2 text-xs font-medium bg-brand rounded text-white bg-brand-hover transition shadow-sm">Salvar Registro</button>
+                        <button type="button" onclick="window.limparFormMusica()" class="px-4 py-2 text-xs font-medium bg-zinc-900 rounded text-zinc-400 hover:bg-zinc-800">Cancelar</button>
+                        <button type="submit" class="px-4 py-2 text-xs font-medium bg-brand rounded text-white bg-brand-hover shadow-sm">Salvar Registro</button>
                     </div>
                 </form>
                 <div class="bg-spotify-card rounded-lg border border-zinc-900 overflow-hidden shadow-sm">
@@ -245,9 +240,6 @@
                                 <th class="py-3 px-4">Título</th>
                                 <th class="py-3 px-4">Artista</th>
                                 <th class="py-3 px-4">Gênero</th>
-                                <th class="py-3 px-4">Tom</th>
-                                <th class="py-3 px-4">BPM</th>
-                                <th class="py-3 px-4">Duração</th>
                                 <th class="py-3 px-4 text-right">Ações</th>
                             </tr>
                         </thead>
@@ -264,48 +256,20 @@
                     <div class="bg-spotify-card p-6 rounded-lg border border-zinc-900 h-fit space-y-4 shadow-sm">
                         <h4 class="text-xs font-semibold uppercase tracking-wider text-zinc-400 border-b border-zinc-900 pb-2">Nova Set-List</h4>
                         <form id="form-repertorio" class="space-y-4">
-                            <input type="hidden" id="repertorio-id">
                             <div>
                                 <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Banda Vinculada</label>
-                                <select id="repertorio-banda-id" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-400 focus:outline-none focus:border-zinc-700 transition"></select>
+                                <select id="repertorio-banda-id" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-400 focus:outline-none focus:border-zinc-700"></select>
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Nome da Lista</label>
-                                <input type="text" id="repertorio-nome" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
+                                <input type="text" id="repertorio-nome" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700">
                             </div>
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Descrição</label>
-                                <input type="text" id="repertorio-observacoes" class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
-                            </div>
-                            <button type="submit" class="w-full py-2 bg-brand rounded text-xs font-semibold uppercase tracking-wider text-white bg-brand-hover transition shadow-sm">Salvar Estrutura</button>
+                            <button type="submit" class="w-full py-2 bg-brand rounded text-xs font-semibold uppercase tracking-wider text-white bg-brand-hover shadow-sm">Salvar</button>
                         </form>
                     </div>
                     <div class="lg:col-span-2 bg-spotify-card p-6 rounded-lg border border-zinc-900 space-y-4 shadow-sm">
                         <h4 class="text-xs font-semibold uppercase tracking-wider text-zinc-400 border-b border-zinc-900 pb-2">Set-Lists Consolidadas</h4>
                         <div id="lista-repertorios" class="space-y-3"></div>
-                    </div>
-                </div>
-
-                <div id="gerenciador-musicas-repertorio" class="hidden bg-spotify-card p-6 rounded-lg border border-zinc-800 space-y-6 shadow-md">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-zinc-900 pb-4">
-                        <div>
-                            <h3 id="nome-repertorio-ativo" class="text-xl font-semibold tracking-tight text-zinc-100">Nome do Repertório</h3>
-                            <div class="flex flex-wrap gap-3 mt-2 text-[11px] font-semibold uppercase tracking-wider">
-                                <span class="bg-zinc-950 px-3 py-1 rounded border border-zinc-900 text-zinc-400">Qtd: <span id="rep-qtd-musicas" class="text-brand">0</span></span>
-                                <span class="bg-zinc-950 px-3 py-1 rounded border border-zinc-900 text-zinc-400">Tempo Total: <span id="rep-tempo-total" class="text-zinc-200">00:00</span></span>
-                                <span class="bg-zinc-950 px-3 py-1 rounded border border-zinc-900 text-zinc-400">BPM Médio: <span id="rep-bpm-medio" class="text-zinc-200">0</span></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="space-y-3">
-                            <h5 class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Acervo Disponível</h5>
-                            <div class="max-h-64 overflow-y-auto border border-zinc-900 rounded divide-y divide-zinc-900 bg-zinc-950" id="lista-add-musicas-disponiveis"></div>
-                        </div>
-                        <div class="space-y-3">
-                            <h5 class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Grade do Repertório</h5>
-                            <div class="space-y-2" id="lista-musicas-do-repertorio"></div>
-                        </div>
                     </div>
                 </div>
             </section>
@@ -319,34 +283,30 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Banda</label>
-                            <select id="evento-banda-id" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-400 focus:outline-none focus:border-zinc-700 transition"></select>
+                            <select id="evento-banda-id" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-400 focus:outline-none focus:border-zinc-700"></select>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Repertório Vinculado</label>
-                            <select id="evento-repertorio-id" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-400 focus:outline-none focus:border-zinc-700 transition"></select>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Repertório</label>
+                            <select id="evento-repertorio-id" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-400 focus:outline-none focus:border-zinc-700"></select>
                         </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Nome do Evento</label>
+                        <input type="text" id="evento-nome" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700">
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Nome do Evento</label>
-                            <input type="text" id="evento-nome" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Local</label>
+                            <input type="text" id="evento-local" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Local</label>
-                            <input type="text" id="evento-local" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Data</label>
+                            <input type="date" id="evento-data" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-400 focus:outline-none focus:border-zinc-700">
                         </div>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Data</label>
-                        <input type="date" id="evento-data" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-400 focus:outline-none focus:border-zinc-700 transition">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Observações</label>
-                        <input type="text" id="evento-observacoes" class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
-                    </div>
                     <div class="flex gap-2 justify-end pt-2">
-                        <button type="button" onclick="window.limparFormEvento()" class="px-4 py-2 text-xs font-medium bg-zinc-900 rounded text-zinc-400 hover:bg-zinc-800 transition">Cancelar</button>
-                        <button type="submit" class="px-4 py-2 text-xs font-medium bg-brand rounded text-white bg-brand-hover transition shadow-sm">Salvar Registro</button>
+                        <button type="button" onclick="window.limparFormEvento()" class="px-4 py-2 text-xs font-medium bg-zinc-900 rounded text-zinc-400 hover:bg-zinc-800">Cancelar</button>
+                        <button type="submit" class="px-4 py-2 text-xs font-medium bg-brand rounded text-white bg-brand-hover shadow-sm">Salvar Registro</button>
                     </div>
                 </form>
                 <div class="bg-spotify-card rounded-lg border border-zinc-900 overflow-hidden shadow-sm">
@@ -355,7 +315,6 @@
                             <tr>
                                 <th class="py-3 px-4">Banda</th>
                                 <th class="py-3 px-4">Evento</th>
-                                <th class="py-3 px-4">Local</th>
                                 <th class="py-3 px-4">Data</th>
                                 <th class="py-3 px-4 text-right">Ações</th>
                             </tr>
@@ -368,6 +327,125 @@
         </main>
     </div>
 
-    <script type="module" src="app.js"></script>
+    <script type="module">
+        import { supabase } from './supabaseClient.js';
+
+        // Expõe as abas globalmente logo no início do carregamento
+        window.switchTab = function(tabId) {
+            document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+            const target = document.getElementById(`tab-${tabId}`);
+            if (target) target.classList.remove('hidden');
+
+            document.querySelectorAll('#main-nav button').forEach(btn => {
+                if (btn.getAttribute('data-tab') === tabId) {
+                    btn.className = "w-full text-left px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 bg-brand text-white shadow-sm";
+                } else {
+                    btn.className = "w-full text-left px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 text-zinc-400 hover:bg-zinc-900 hover:text-zinc-100";
+                }
+            });
+
+            if (tabId === 'dashboard') carregarDashboard();
+            if (tabId === 'bandas') listarBandas();
+            if (tabId === 'integrantes') { carregarSelectsBandas(); listarIntegrantes(); }
+            if (tabId === 'musicas') window.listarMusicas();
+            if (tabId === 'repertorios') { carregarSelectsBandas(); listarRepertorios(); }
+            if (tabId === 'eventos') { carregarSelectsBandas(); carregarSelectsRepertorios(); listarEventos(); }
+        };
+
+        // Métodos de Limpeza Globais
+        window.limparFormBanda = () => { document.getElementById('form-banda')?.reset(); document.getElementById('banda-id').value = ''; };
+        window.limparFormIntegrante = () => { document.getElementById('form-integrante')?.reset(); document.getElementById('integrante-id').value = ''; };
+        window.limparFormMusica = () => { document.getElementById('form-musica')?.reset(); document.getElementById('musica-id').value = ''; };
+        window.limparFormEvento = () => { document.getElementById('form-evento')?.reset(); document.getElementById('evento-id').value = ''; };
+
+        // Integração Crud: Bandas
+        async function listarBandas() {
+            const { data } = await supabase.from('bandas').select('*').order('nome');
+            const tbody = document.getElementById('lista-bandas');
+            if (tbody) tbody.innerHTML = data?.map(b => `
+                <tr class="border-b border-zinc-900 text-zinc-300 hover:bg-zinc-900/30 transition">
+                    <td class="py-3 px-4 font-medium">${b.nome}</td>
+                    <td class="py-3 px-4 text-zinc-400">${b.cidade || ''}</td>
+                    <td class="py-3 px-4 text-right space-x-2">
+                        <button onclick="window.editarBanda('${b.id}', '${b.nome}', '${b.cidade || ''}')" class="text-zinc-400 hover:text-zinc-100 text-xs">Editar</button>
+                    </td>
+                </tr>
+            `).join('') || '';
+        }
+
+        window.editarBanda = (id, nome, cidade) => {
+            document.getElementById('banda-id').value = id;
+            document.getElementById('banda-nome').value = nome;
+            document.getElementById('banda-cidade').value = cidade;
+        };
+
+        // Integração Crud: Músicas
+        window.listarMusicas = async function() {
+            const busca = document.getElementById('busca-musica')?.value || '';
+            let req = supabase.from('musicas').select('*');
+            if (busca) req = req.ilike('titulo', `%${busca}%`);
+            
+            const { data } = await req.order('titulo');
+            const tbody = document.getElementById('lista-musicas');
+            if (tbody) tbody.innerHTML = data?.map(m => `
+                <tr class="border-b border-zinc-900 text-zinc-300">
+                    <td class="py-3 px-4 font-medium">${m.titulo}</td>
+                    <td class="py-3 px-4 text-zinc-400">${m.artista}</td>
+                    <td class="py-3 px-4 text-zinc-500 text-xs">${m.categoria || 'Geral'}</td>
+                    <td class="py-3 px-4 text-right">
+                        <button onclick="window.editarMusica('${m.id}','${m.titulo}','${m.artista}')" class="text-zinc-400 hover:text-zinc-100 text-xs">Editar</button>
+                    </td>
+                </tr>
+            `).join('') || '';
+        };
+
+        window.editarMusica = (id, titulo, artista) => {
+            document.getElementById('musica-id').value = id;
+            document.getElementById('musica-titulo').value = titulo;
+            document.getElementById('musica-artista').value = artista;
+        };
+
+        // Submissão de Formulários Seguros
+        document.getElementById('form-banda')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('banda-id').value;
+            const payload = { nome: document.getElementById('banda-nome').value, cidade: document.getElementById('banda-cidade').value };
+            if (id) await supabase.from('bandas').update(payload).eq('id', id);
+            else await supabase.from('bandas').insert([payload]);
+            window.limparFormBanda(); listarBandas();
+        });
+
+        document.getElementById('form-musica')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('musica-id').value;
+            const payload = { titulo: document.getElementById('musica-titulo').value, artista: document.getElementById('musica-artista').value, tom: document.getElementById('musica-tom').value, duracao: document.getElementById('musica-duracao').value };
+            if (id) await supabase.from('musicas').update(payload).eq('id', id);
+            else await supabase.from('musicas').insert([payload]);
+            window.limparFormMusica(); window.listarMusicas();
+        });
+
+        // Demais inicializadores auxiliares de Selects
+        async function carregarSelectsBandas() {
+            const { data } = await supabase.from('bandas').select('id, nome').order('nome');
+            const html = data?.map(b => `<option value="${b.id}">${b.nome}</option>`).join('') || '';
+            if (document.getElementById('integrante-banda-id')) document.getElementById('integrante-banda-id').innerHTML = html;
+            if (document.getElementById('repertorio-banda-id')) document.getElementById('repertorio-banda-id').innerHTML = html;
+            if (document.getElementById('evento-banda-id')) document.getElementById('evento-banda-id').innerHTML = html;
+        }
+
+        async function carregarDashboard() {
+            const [b, i, m] = await Promise.all([
+                supabase.from('bandas').select('*', { count: 'exact', head: true }),
+                supabase.from('integrantes').select('*', { count: 'exact', head: true }),
+                supabase.from('musicas').select('*', { count: 'exact', head: true })
+            ]);
+            document.getElementById('dash-bandas').innerText = b.count || 0;
+            document.getElementById('dash-integrantes').innerText = i.count || 0;
+            document.getElementById('dash-musicas').innerText = m.count || 0;
+        }
+
+        // Inicializa o app na Tab Principal
+        window.switchTab('dashboard');
+    </script>
 </body>
 </html>
