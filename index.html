@@ -4,23 +4,377 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Repertório Fácil</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        /* Ajustes finos de cores baseados no Spotify/Notion */
+        .bg-spotify-black { background-color: #121212; }
+        .bg-spotify-card { background-color: #1E1E1E; }
+        .border-brand { border-color: #D62828; }
+        .text-brand { color: #D62828; }
+        .bg-brand { background-color: #D62828; }
+        .bg-brand-hover:hover { background-color: #b02020; }
+    </style>
 </head>
-<body style="margin: 0; padding: 20px; background-color: #121212; color: #FFFFFF; font-family: sans-serif; min-height: 100vh;">
+<body class="bg-spotify-black text-zinc-100 min-h-screen font-sans antialiased">
 
-    <h1 style="border-bottom: 2px solid #D62828; padding-bottom: 10px;">🎵 Repertório Fácil</h1>
+    <div class="flex flex-col md:flex-row min-h-screen">
+        
+        <aside class="w-full md:w-64 bg-zinc-950 p-6 flex flex-col justify-between border-b md:border-b-0 md:border-r border-zinc-800">
+            <div>
+                <div class="flex items-center gap-2 pb-6 border-b border-zinc-800 mb-6">
+                    <span class="text-2xl">🎶</span>
+                    <h1 class="text-xl font-bold tracking-wider text-brand">Repertório Fácil</h1>
+                </div>
+                <nav class="space-y-1" id="main-nav">
+                    <button onclick="switchTab('dashboard')" class="w-full text-left px-4 py-2.5 rounded-lg font-medium transition bg-brand text-white" data-tab="dashboard">📊 Dashboard</button>
+                    <button onclick="switchTab('bandas')" class="w-full text-left px-4 py-2.5 rounded-lg font-medium transition text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200" data-tab="bandas">🎸 Bandas</button>
+                    <button onclick="switchTab('integrantes')" class="w-full text-left px-4 py-2.5 rounded-lg font-medium transition text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200" data-tab="integrantes">👥 Integrantes</button>
+                    <button onclick="switchTab('musicas')" class="w-full text-left px-4 py-2.5 rounded-lg font-medium transition text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200" data-tab="musicas">🎵 Músicas</button>
+                    <button onclick="switchTab('repertorios')" class="w-full text-left px-4 py-2.5 rounded-lg font-medium transition text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200" data-tab="repertorios">📋 Repertórios</button>
+                    <button onclick="switchTab('eventos')" class="w-full text-left px-4 py-2.5 rounded-lg font-medium transition text-zinc-400 hover:bg-zinc-900 hover:text-zinc-200" data-tab="eventos">📅 Eventos</button>
+                </nav>
+            </div>
+            <footer class="pt-4 border-t border-zinc-800 mt-6 md:mt-0 text-center md:text-left">
+                <p class="text-xs text-zinc-500">Conectado ao Supabase</p>
+            </footer>
+        </aside>
 
-    <div style="display: flex; gap: 20px; margin: 20px 0;">
-        <div style="background-color: #1E1E1E; padding: 20px; borderRadius: 8px; width: 150px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-            <p style="color: #A7A7A7; margin: 0;">Bandas</p>
-            <h2 id="qtd-bandas" style="margin: 10px 0 0 0; font-size: 2.5rem;">0</h2>
-        </div>
-        <div style="background-color: #1E1E1E; padding: 20px; borderRadius: 8px; width: 150px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-            <p style="color: #A7A7A7; margin: 0;">Músicas</p>
-            <h2 id="qtd-musicas" style="margin: 10px 0 0 0; font-size: 2.5rem;">0</h2>
-        </div>
+        <main class="flex-1 p-6 md:p-10 max-w-7xl mx-auto w-full">
+            
+            <section id="tab-dashboard" class="space-y-8">
+                <div class="border-b border-zinc-800 pb-4">
+                    <h2 class="text-3xl font-bold tracking-tight">Visão Geral</h2>
+                    <p class="text-sm text-zinc-400 mt-1">Estatísticas gerais das suas bandas e eventos.</p>
+                </div>
+                
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-spotify-card p-6 rounded-xl border border-zinc-800/50">
+                        <p class="text-sm font-medium text-zinc-400">Total de Bandas</p>
+                        <h3 class="text-3xl font-bold mt-2 text-brand" id="dash-bandas">0</h3>
+                    </div>
+                    <div class="bg-spotify-card p-6 rounded-xl border border-zinc-800/50">
+                        <p class="text-sm font-medium text-zinc-400">Total de Integrantes</p>
+                        <h3 class="text-3xl font-bold mt-2 text-zinc-100" id="dash-integrantes">0</h3>
+                    </div>
+                    <div class="bg-spotify-card p-6 rounded-xl border border-zinc-800/50">
+                        <p class="text-sm font-medium text-zinc-400">Total de Músicas</p>
+                        <h3 class="text-3xl font-bold mt-2 text-zinc-100" id="dash-musicas">0</h3>
+                    </div>
+                    <div class="bg-spotify-card p-6 rounded-xl border border-zinc-800/50">
+                        <p class="text-sm font-medium text-zinc-400">Total de Repertórios</p>
+                        <h3 class="text-3xl font-bold mt-2 text-zinc-100" id="dash-repertorios">0</h3>
+                    </div>
+                </div>
+
+                <div class="bg-spotify-card rounded-xl border border-zinc-800/50 p-6">
+                    <h4 class="text-lg font-bold mb-4 flex items-center gap-2">📅 Próximos Eventos</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-zinc-800 text-zinc-400 text-xs uppercase tracking-wider">
+                                    <th class="py-3 px-4">Evento</th>
+                                    <th class="py-3 px-4">Local</th>
+                                    <th class="py-3 px-4">Data</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dash-lista-eventos" class="divide-y divide-zinc-800/50 text-sm">
+                                <tr><td colspan="3" class="py-4 px-4 text-zinc-500 italic">Nenhum evento agendado.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tab-bandas" class="hidden space-y-6">
+                <div class="flex justify-between items-center border-b border-zinc-800 pb-4">
+                    <div>
+                        <h2 class="text-3xl font-bold tracking-tight">🎸 Gerenciar Bandas</h2>
+                        <p class="text-sm text-zinc-400 mt-1">Cadastre e configure suas formações musicais.</p>
+                    </div>
+                </div>
+                <form id="form-banda" class="bg-spotify-card p-6 rounded-xl border border-zinc-800 space-y-4 max-w-xl">
+                    <input type="hidden" id="banda-id">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Nome da Banda</label>
+                            <input type="text" id="banda-nome" required class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Estado (UF)</label>
+                            <input type="text" id="banda-estado" maxlength="2" placeholder="SP" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Cidade</label>
+                        <input type="text" id="banda-cidade" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Observações</label>
+                        <textarea id="banda-observacoes" rows="2" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand"></textarea>
+                    </div>
+                    <div class="flex gap-2 justify-end">
+                        <button type="button" onclick="limparFormBanda()" class="px-4 py-2 text-sm bg-zinc-800 rounded-lg text-zinc-300 hover:bg-zinc-700 transition">Cancelar</button>
+                        <button type="submit" class="px-4 py-2 text-sm bg-brand rounded-lg text-white font-medium bg-brand-hover transition">Salvar Banda</button>
+                    </div>
+                </form>
+                <div class="bg-spotify-card rounded-xl border border-zinc-800 overflow-hidden">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-zinc-950 text-zinc-400 text-xs uppercase tracking-wider">
+                            <tr>
+                                <th class="py-3 px-4">Nome</th>
+                                <th class="py-3 px-4">Localidade</th>
+                                <th class="py-3 px-4 text-right">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-bandas" class="divide-y divide-zinc-800 text-sm"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="tab-integrantes" class="hidden space-y-6">
+                <div class="border-b border-zinc-800 pb-4">
+                    <h2 class="text-3xl font-bold tracking-tight">👥 Integrantes da Banda</h2>
+                    <p class="text-sm text-zinc-400 mt-1">Gerencie os músicos associados a cada banda.</p>
+                </div>
+                <form id="form-integrante" class="bg-spotify-card p-6 rounded-xl border border-zinc-800 space-y-4 max-w-xl">
+                    <input type="hidden" id="integrante-id">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Selecionar Banda</label>
+                        <select id="integrante-banda-id" required class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand"></select>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Nome do Músico</label>
+                            <input type="text" id="integrante-nome" required class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Instrumento Principal</label>
+                            <input type="text" id="integrante-instrumento" placeholder="Ex: Guitarra, Bateria" required class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand">
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 py-2">
+                        <input type="checkbox" id="integrante-vocal" class="w-4 h-4 rounded accent-brand">
+                        <label for="integrante-vocal" class="text-sm font-medium text-zinc-300">Este integrante também faz Vocal/Backing Vocal</label>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Notas / Observações</label>
+                        <input type="text" id="integrante-observacoes" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand">
+                    </div>
+                    <div class="flex gap-2 justify-end">
+                        <button type="button" onclick="limparFormIntegrante()" class="px-4 py-2 text-sm bg-zinc-800 rounded-lg text-zinc-300 hover:bg-zinc-700 transition">Cancelar</button>
+                        <button type="submit" class="px-4 py-2 text-sm bg-brand rounded-lg text-white font-medium bg-brand-hover transition">Salvar Integrante</button>
+                    </div>
+                </form>
+                <div class="bg-spotify-card rounded-xl border border-zinc-800 overflow-hidden">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-zinc-950 text-zinc-400 text-xs uppercase tracking-wider">
+                            <tr>
+                                <th class="py-3 px-4">Banda</th>
+                                <th class="py-3 px-4">Nome</th>
+                                <th class="py-3 px-4">Instrumento</th>
+                                <th class="py-3 px-4">Canta?</th>
+                                <th class="py-3 px-4 text-right">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-integrantes" class="divide-y divide-zinc-800 text-sm"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="tab-musicas" class="hidden space-y-6">
+                <div class="border-b border-zinc-800 pb-4">
+                    <h2 class="text-3xl font-bold tracking-tight">🎵 Acervo de Músicas</h2>
+                    <p class="text-sm text-zinc-400 mt-1">Mantenha o catálogo global de músicas atualizado.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-spotify-card p-4 rounded-xl border border-zinc-800">
+                    <input type="text" id="busca-musica" oninput="listarMusicas()" placeholder="🔍 Buscar por título ou artista..." class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand">
+                    <select id="filtro-categoria" onchange="listarMusicas()" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand">
+                        <option value="">Todas as Categorias</option>
+                        <option value="Rock">Rock</option>
+                        <option value="Pop">Pop</option>
+                        <option value="Metal">Metal</option>
+                        <option value="Adoração">Adoração</option>
+                        <option value="Outros">Outros</option>
+                    </select>
+                    <select id="ordenacao-musica" onchange="listarMusicas()" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand">
+                        <option value="titulo">Ordenar por Nome</option>
+                        <option value="bpm">Ordenar por BPM</option>
+                        <option value="tom">Ordenar por Tom</option>
+                    </select>
+                </div>
+                <form id="form-musica" class="bg-spotify-card p-6 rounded-xl border border-zinc-800 space-y-4">
+                    <input type="hidden" id="musica-id">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Título da Música</label>
+                            <input type="text" id="musica-titulo" required class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Artista / Banda Original</label>
+                            <input type="text" id="musica-artista" required class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Categoria / Gênero</label>
+                            <input type="text" id="musica-categoria" placeholder="Ex: Rock, Pop" required class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Tom da Música</label>
+                            <input type="text" id="musica-tom" placeholder="Ex: Am, G#" required class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">BPM (Andamento)</label>
+                            <input type="number" id="musica-bpm" placeholder="120" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Duração (MM:SS)</label>
+                            <input type="text" id="musica-duracao" placeholder="04:15" required class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Link da Cifra / Notas de Execução</label>
+                        <input type="text" id="musica-observacoes" placeholder="Link da cifra ou observação importante" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand">
+                    </div>
+                    <div class="flex gap-2 justify-end">
+                        <button type="button" onclick="limparFormMusica()" class="px-4 py-2 text-sm bg-zinc-800 rounded-lg text-zinc-300 hover:bg-zinc-700 transition">Cancelar</button>
+                        <button type="submit" class="px-4 py-2 text-sm bg-brand rounded-lg text-white font-medium bg-brand-hover transition">Salvar Música</button>
+                    </div>
+                </form>
+                <div class="bg-spotify-card rounded-xl border border-zinc-800 overflow-hidden">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-zinc-950 text-zinc-400 text-xs uppercase tracking-wider">
+                            <tr>
+                                <th class="py-3 px-4">Título</th>
+                                <th class="py-3 px-4">Artista</th>
+                                <th class="py-3 px-4">Gênero</th>
+                                <th class="py-3 px-4">Tom</th>
+                                <th class="py-3 px-4">BPM</th>
+                                <th class="py-3 px-4">Duração</th>
+                                <th class="py-3 px-4 text-right">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-musicas" class="divide-y divide-zinc-800 text-sm"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="tab-repertorios" class="hidden space-y-6">
+                <div class="border-b border-zinc-800 pb-4">
+                    <h2 class="text-3xl font-bold tracking-tight">📋 Montagem de Repertórios</h2>
+                    <p class="text-sm text-zinc-400 mt-1">Crie listas estruturadas de músicas para os seus shows.</p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-spotify-card p-6 rounded-xl border border-zinc-800 h-fit space-y-4">
+                        <h4 class="text-md font-bold uppercase tracking-wider text-zinc-400 border-b border-zinc-800 pb-2">Novo Repertório</h4>
+                        <form id="form-repertorio" class="space-y-4">
+                            <input type="hidden" id="repertorio-id">
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Banda Vinculada</label>
+                                <select id="repertorio-banda-id" required class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand"></select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Nome da Set-List</label>
+                                <input type="text" id="repertorio-nome" placeholder="Ex: Show de Cervejaria Nov/26" required class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Descrição / Notas</label>
+                                <input type="text" id="repertorio-observacoes" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand">
+                            </div>
+                            <button type="submit" class="w-full py-2 bg-brand rounded-lg text-white font-medium bg-brand-hover transition">Salvar Estrutura</button>
+                        </form>
+                    </div>
+                    <div class="lg:col-span-2 bg-spotify-card p-6 rounded-xl border border-zinc-800 space-y-4">
+                        <h4 class="text-md font-bold uppercase tracking-wider text-zinc-400 border-b border-zinc-800 pb-2">Set-Lists Salvas</h4>
+                        <div id="lista-repertorios" class="space-y-3"></div>
+                    </div>
+                </div>
+
+                <div id="gerenciador-musicas-repertorio" class="hidden bg-spotify-card p-6 rounded-xl border-2 border-brand space-y-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-zinc-800 pb-4">
+                        <div>
+                            <h3 id="nome-repertorio-ativo" class="text-2xl font-bold">Nome do Repertório</h3>
+                            <div class="flex flex-wrap gap-4 mt-2 text-xs font-medium text-zinc-400">
+                                <span class="bg-zinc-950 px-2.5 py-1 rounded-full">🎵 Qtd: <span id="rep-qtd-musicas" class="text-brand">0</span></span>
+                                <span class="bg-zinc-950 px-2.5 py-1 rounded-full">⏱️ Tempo Total: <span id="rep-tempo-total" class="text-zinc-200">00:00</span></span>
+                                <span class="bg-zinc-950 px-2.5 py-1 rounded-full">🥁 Andamento Médio: <span id="rep-bpm-medio" class="text-zinc-200">0</span> BPM</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="window.print()" class="px-3 py-1.5 text-xs bg-zinc-800 hover:bg-zinc-700 transition rounded-lg">🖨️ Imprimir / PDF</button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="space-y-3">
+                            <h5 class="text-sm font-bold uppercase tracking-wider text-zinc-400">1. Escolha a Música para Incluir</h5>
+                            <div class="max-h-64 overflow-y-auto border border-zinc-800 rounded-lg divide-y divide-zinc-800 bg-zinc-950" id="lista-add-musicas-disponiveis"></div>
+                        </div>
+                        <div class="space-y-3">
+                            <h5 class="text-sm font-bold uppercase tracking-wider text-zinc-400">2. Músicas do Set (Altere a Ordem Digitada)</h5>
+                            <div class="space-y-2" id="lista-musicas-do-repertorio"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tab-eventos" class="hidden space-y-6">
+                <div class="border-b border-zinc-800 pb-4">
+                    <h2 class="text-3xl font-bold tracking-tight">📅 Agenda de Eventos</h2>
+                    <p class="text-sm text-zinc-400 mt-1">Vincule repertórios específicos a datas de shows ou ensaios.</p>
+                </div>
+                <form id="form-evento" class="bg-spotify-card p-6 rounded-xl border border-zinc-800 space-y-4 max-w-xl">
+                    <input type="hidden" id="evento-id">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Banda</label>
+                            <select id="evento-banda-id" required class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand"></select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Set-List / Repertório Vinculado</label>
+                            <select id="evento-repertorio-id" required class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand"></select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Nome do Evento / Local</label>
+                            <input type="text" id="evento-nome" placeholder="Ex: Festival de Rock, Casamento" required class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Local da Apresentação</label>
+                            <input type="text" id="evento-local" placeholder="Ex: Bar do Rock, Paróquia São Judas" required class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Data da Apresentação</label>
+                        <input type="date" id="evento-data" required class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Observações da Agenda</label>
+                        <input type="text" id="evento-observacoes" placeholder="Horário de passagem de som, line-up, etc." class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand">
+                    </div>
+                    <div class="flex gap-2 justify-end">
+                        <button type="button" onclick="limparFormEvento()" class="px-4 py-2 text-sm bg-zinc-800 rounded-lg text-zinc-300 hover:bg-zinc-700 transition">Cancelar</button>
+                        <button type="submit" class="px-4 py-2 text-sm bg-brand rounded-lg text-white font-medium bg-brand-hover transition">Salvar Evento</button>
+                    </div>
+                </form>
+                <div class="bg-spotify-card rounded-xl border border-zinc-800 overflow-hidden">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-zinc-950 text-zinc-400 text-xs uppercase tracking-wider">
+                            <tr>
+                                <th class="py-3 px-4">Banda</th>
+                                <th class="py-3 px-4">Evento</th>
+                                <th class="py-3 px-4">Local</th>
+                                <th class="py-3 px-4">Data</th>
+                                <th class="py-3 px-4 text-right">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-eventos" class="divide-y divide-zinc-800 text-sm"></tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
     </div>
-
-    <p style="color: #A7A7A7; font-style: italic;">Conectado com sucesso ao Supabase e hospedado no Netlify!</p>
 
     <script type="module" src="app.js"></script>
 </body>
