@@ -1,18 +1,29 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Repertório Fácil</title>
-  </head>
-  <body style="margin: 0; background-color: #121212;">
-    <div id="root"></div>
-    <script type="module">
-      import React from 'https://esm.sh/react';
-      import ReactDOM from 'https://esm.sh/react-dom';
-      import Dashboard from './Dashboard.jsx';
+    <!-- Tailwind CSS para o visual ficar bonito de primeira -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-zinc-950 text-zinc-50 min-h-screen p-6">
 
-      ReactDOM.render(React.createElement(Dashboard), document.getElementById('root'));
-    </script>
-  </body>
+    <div class="max-w-4xl mx-auto">
+        <header class="flex justify-between items-center border-b border-zinc-800 pb-4 mb-6">
+            <h1 class="text-2xl font-bold tracking-tight">🎶 Repertório Fácil</h1>
+            <span class="text-xs bg-zinc-800 px-2.5 py-1 rounded-full text-zinc-400 font-medium">Set-List</span>
+        </header>
+
+        <main>
+            <!-- O conteúdo do seu app vai carregar aqui via JavaScript -->
+            <div id="app" class="space-y-6">
+                <p class="text-zinc-400 animate-pulse">Carregando suas músicas...</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Vinculando o script principal que vai controlar o banco -->
+    <script type="module" src="app.js"></script>
+</body>
 </html>
