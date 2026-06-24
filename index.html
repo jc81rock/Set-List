@@ -5,11 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Repertório Fácil</title>
 </head>
-<body style="margin: 0; background-color: #121212;">
-    <!-- O React vai injetar o Dashboard aqui dentro -->
-    <div id="app"></div>
+<body style="margin: 0; padding: 20px; background-color: #121212; color: #FFFFFF; font-family: sans-serif; min-height: 100vh;">
 
-    <!-- Chama o nosso script principal -->
+    <h1 style="border-bottom: 2px solid #D62828; padding-bottom: 10px;">🎵 Repertório Fácil</h1>
+
+    <div style="display: flex; gap: 20px; margin: 20px 0;">
+        <div style="background-color: #1E1E1E; padding: 20px; borderRadius: 8px; width: 150px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+            <p style="color: #A7A7A7; margin: 0;">Bandas</p>
+            <h2 id="qtd-bandas" style="margin: 10px 0 0 0; font-size: 2.5rem;">0</h2>
+        </div>
+        <div style="background-color: #1E1E1E; padding: 20px; borderRadius: 8px; width: 150px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+            <p style="color: #A7A7A7; margin: 0;">Músicas</p>
+            <h2 id="qtd-musicas" style="margin: 10px 0 0 0; font-size: 2.5rem;">0</h2>
+        </div>
+    </div>
+
+    <p style="color: #A7A7A7; font-style: italic;">Conectado com sucesso ao Supabase e hospedado no Netlify!</p>
+
     <script type="module" src="app.js"></script>
 </body>
 </html>
