@@ -1,2 +1,8 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js';
-export const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY);
+
+// Substitua as strings abaixo com os dados reais do seu painel do Supabase
+// Encontrados em: Project Settings -> API
+const SUPABASE_URL = 'https://SEU-PROJETO.supabase.co';
+const SUPABASE_ANON_KEY = 'SUA_CHAVE_ANON_AQUI';
+
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
