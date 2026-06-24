@@ -10,10 +10,9 @@
         body { font-family: 'Inter', sans-serif; }
         .bg-spotify-black { background-color: #0b0b0c; }
         .bg-spotify-card { background-color: #161618; }
-        .border-brand { border-color: #E53E3E; }
-        .text-brand { color: #E53E3E; }
         .bg-brand { background-color: #E53E3E; }
         .bg-brand-hover:hover { background-color: #C53030; }
+        .text-brand { color: #E53E3E; }
     </style>
 </head>
 <body class="bg-spotify-black text-zinc-200 min-h-screen antialiased selection:bg-red-600 selection:text-white">
@@ -92,7 +91,6 @@
             <section id="tab-bandas" class="hidden space-y-6">
                 <div class="border-b border-zinc-900 pb-5">
                     <h2 class="text-2xl font-semibold tracking-tight text-zinc-100">Gerenciar Bandas</h2>
-                    <p class="text-xs text-zinc-500 mt-1 uppercase tracking-wider font-medium">Controle de Formações</p>
                 </div>
                 <form id="form-banda" class="bg-spotify-card p-6 rounded-lg border border-zinc-900 space-y-4 max-w-xl shadow-sm">
                     <input type="hidden" id="banda-id">
@@ -136,7 +134,6 @@
             <section id="tab-integrantes" class="hidden space-y-6">
                 <div class="border-b border-zinc-900 pb-5">
                     <h2 class="text-2xl font-semibold tracking-tight text-zinc-100">Integrantes</h2>
-                    <p class="text-xs text-zinc-500 mt-1 uppercase tracking-wider font-medium">Músicos Vinculados</p>
                 </div>
                 <form id="form-integrante" class="bg-spotify-card p-6 rounded-lg border border-zinc-900 space-y-4 max-w-xl shadow-sm">
                     <input type="hidden" id="integrante-id">
@@ -151,12 +148,12 @@
                         </div>
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Instrumento Principal</label>
-                            <input type="text" id="integrante-instrumento" placeholder="Ex: Guitarra" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
+                            <input type="text" id="integrante-instrumento" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
                         </div>
                     </div>
                     <div class="flex items-center gap-2 py-1">
                         <input type="checkbox" id="integrante-vocal" class="w-4 h-4 rounded accent-brand bg-zinc-950 border-zinc-900">
-                        <label for="integrante-vocal" class="text-xs font-medium text-zinc-400 uppercase tracking-wide">Atua como vocalista ou backing vocal</label>
+                        <label for="integrante-vocal" class="text-xs font-medium text-zinc-400 uppercase tracking-wide">Vocalista / Backing</label>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Notas / Observações</label>
@@ -186,7 +183,6 @@
             <section id="tab-musicas" class="hidden space-y-6">
                 <div class="border-b border-zinc-900 pb-5">
                     <h2 class="text-2xl font-semibold tracking-tight text-zinc-100">Catálogo de Músicas</h2>
-                    <p class="text-xs text-zinc-500 mt-1 uppercase tracking-wider font-medium">Acervo Global</p>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-spotify-card p-4 rounded-lg border border-zinc-900 shadow-sm">
                     <input type="text" id="busca-musica" oninput="window.listarMusicas()" placeholder="Filtrar por título ou artista..." class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
@@ -195,7 +191,6 @@
                         <option value="Rock">Rock</option>
                         <option value="Pop">Pop</option>
                         <option value="Metal">Metal</option>
-                        <option value="Adoração">Adoração</option>
                         <option value="Outros">Outros</option>
                     </select>
                     <select id="ordenacao-musica" onchange="window.listarMusicas()" class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-400 focus:outline-none focus:border-zinc-700 transition">
@@ -218,7 +213,7 @@
                     </div>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Categoria / Gênero</label>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Gênero</label>
                             <input type="text" id="musica-categoria" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
                         </div>
                         <div>
@@ -230,12 +225,12 @@
                             <input type="number" id="musica-bpm" class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Duração (MM:SS)</label>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Duração</label>
                             <input type="text" id="musica-duracao" placeholder="04:00" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Link da Cifra / Notas de Execução</label>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Link da Cifra / Notas</label>
                         <input type="text" id="musica-observacoes" class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
                     </div>
                     <div class="flex gap-2 justify-end pt-2">
@@ -264,7 +259,6 @@
             <section id="tab-repertorios" class="hidden space-y-6">
                 <div class="border-b border-zinc-900 pb-5">
                     <h2 class="text-2xl font-semibold tracking-tight text-zinc-100">Montagem de Repertórios</h2>
-                    <p class="text-xs text-zinc-500 mt-1 uppercase tracking-wider font-medium">Set-Lists e Alinhamentos</p>
                 </div>
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="bg-spotify-card p-6 rounded-lg border border-zinc-900 h-fit space-y-4 shadow-sm">
@@ -302,9 +296,6 @@
                                 <span class="bg-zinc-950 px-3 py-1 rounded border border-zinc-900 text-zinc-400">BPM Médio: <span id="rep-bpm-medio" class="text-zinc-200">0</span></span>
                             </div>
                         </div>
-                        <div>
-                            <button onclick="window.print()" class="px-3 py-1.5 text-xs font-medium bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-zinc-300 transition rounded shadow-sm">Imprimir Relatório</button>
-                        </div>
                     </div>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div class="space-y-3">
@@ -312,7 +303,7 @@
                             <div class="max-h-64 overflow-y-auto border border-zinc-900 rounded divide-y divide-zinc-900 bg-zinc-950" id="lista-add-musicas-disponiveis"></div>
                         </div>
                         <div class="space-y-3">
-                            <h5 class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Grade da Escala (Altere a ordem digitando)</h5>
+                            <h5 class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Grade do Repertório</h5>
                             <div class="space-y-2" id="lista-musicas-do-repertorio"></div>
                         </div>
                     </div>
@@ -322,7 +313,6 @@
             <section id="tab-eventos" class="hidden space-y-6">
                 <div class="border-b border-zinc-900 pb-5">
                     <h2 class="text-2xl font-semibold tracking-tight text-zinc-100">Agenda de Eventos</h2>
-                    <p class="text-xs text-zinc-500 mt-1 uppercase tracking-wider font-medium">Cronograma</p>
                 </div>
                 <form id="form-evento" class="bg-spotify-card p-6 rounded-lg border border-zinc-900 space-y-4 max-w-xl shadow-sm">
                     <input type="hidden" id="evento-id">
@@ -342,7 +332,7 @@
                             <input type="text" id="evento-nome" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Local da Apresentação</label>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Local</label>
                             <input type="text" id="evento-local" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
                         </div>
                     </div>
@@ -351,7 +341,7 @@
                         <input type="date" id="evento-data" required class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-400 focus:outline-none focus:border-zinc-700 transition">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Observações da Agenda</label>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1.5">Observações</label>
                         <input type="text" id="evento-observacoes" class="w-full bg-zinc-950 border border-zinc-900 rounded px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:border-zinc-700 transition">
                     </div>
                     <div class="flex gap-2 justify-end pt-2">
